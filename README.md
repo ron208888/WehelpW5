@@ -64,3 +64,45 @@ select sum(follower_count) as follower_count欄位總和 from member;
 select avg(follower_count) as follower_count欄位平均 from member;
 ~~~~
 ![](https://img.onl/U6WALt)
+
+## 要求五
+*  在資料庫中，建立新資料表紀錄留言資訊，取名字為 message。資料表中必須包含以
+下欄位設定：
+~~~~sql
+create table message(
+id bigint primary key auto_increment,
+member_id bigint not null ,
+content varchar(255) not null,
+like_count int unsigned not null default 0,
+time datetime not null default now(),
+foreign key(member_id) references member(id)
+);
+
+insert into message(member_id,content,like_count) values(1,'滑起來囉寶貝',500);
+insert into message(member_id,content,like_count) values(2,'一刀殺進去',800);
+insert into message(member_id,content,like_count) values(3,'喔是喔真的假的555',10);
+insert into message(member_id,content,like_count) values(4,'靠我力量!',1000);
+insert into message(member_id,content,like_count) values(5,'這個叫什麼!',1200);
+select * from message;
+~~~~
+![](https://img.onl/22GLmL)
+
+* 使用SELECT搭配JOIN語法，取得所有留言，結果須包含留言者會員的姓名。
+~~~~sql
+select member.name,message.content from member inner join message on member.id=message.member_id;
+~~~~
+![](https://img.onl/5wCcP6)
+
+* 使用 SELECT 搭配 JOIN 語法，取得 member 資料表中欄位 username 是 test 的所有
+留言，資料中須包含留言者會員的姓名。
+~~~~sql
+select member.name,message.content from member inner join message on member.id=message.member_id where username='test';
+~~~~
+![](https://img.onl/IhANSU)
+
+* 使用 SELECT、SQL Aggregate Functions 搭配 JOIN 語法，取得 member 資料表中
+欄位 username 是 test 的所有留言平均按讚數。
+~~~~sql
+select avg(like_count) as test留言平均按讚數 from member inner join message on member.id=message.member_id where username='test';
+~~~~
+![](https://img.onl/cuH4S4)
