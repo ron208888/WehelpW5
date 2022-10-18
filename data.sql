@@ -1,48 +1,84 @@
-SHOW DATABASES;
-create database website;
-use website;
-show tables;
-create table member(
-id bigint primary key auto_increment,
-name varchar(255) not null,
-username varchar(255) not null,
-password varchar(255) not null,
-follower_count int unsigned not null default 0,
-time datetime not null default now()
-);
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+--
+-- Host: localhost    Database: website
+-- ------------------------------------------------------
+-- Server version	8.0.31
 
-insert into member(name,username,password,follower_count) values('任','test','test',100);
-insert into member(name,username,password,follower_count,time) values('與','yu','yu',500,'2000-01-31 00:30:15');
-insert into member(name,username,password,follower_count,time) values('陳','chen','chen',50,'2018-08-28 08:48:48');
-insert into member(name,username,password,follower_count,time) values('晨','chenchen','chenchen',800,'2020-02-09 14:09:15');
-insert into member(name,username,password,follower_count,time) values('芯','xin','xin',1000,'2004-06-16 06:30:30');
-select * from member;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-select * from member order by time desc;
-select * from member order by time desc limit 1,3;
-select * from member where username='test' and password='test';
-update member set name='test2' where username='test';
+--
+-- Table structure for table `member`
+--
 
-select count(*) as 總共有幾筆資料 from member;
-select sum(follower_count) as follower_count欄位總和 from member;
-select avg(follower_count) as follower_count欄位平均 from member;
+DROP TABLE IF EXISTS `member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `member` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `follower_count` int unsigned NOT NULL DEFAULT '0',
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-create table message(
-id bigint primary key auto_increment,
-member_id bigint not null ,
-content varchar(255) not null,
-like_count int unsigned not null default 0,
-time datetime not null default now(),
-foreign key(member_id) references member(id)
-);
+--
+-- Dumping data for table `member`
+--
 
-insert into message(member_id,content,like_count) values(1,'滑起來囉寶貝',500);
-insert into message(member_id,content,like_count) values(2,'一刀殺進去',800);
-insert into message(member_id,content,like_count) values(3,'喔是喔真的假的555',10);
-insert into message(member_id,content,like_count) values(4,'靠我力量!',1000);
-insert into message(member_id,content,like_count) values(5,'這個叫什麼!',1200);
-select * from message;
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES (1,'test2','test','test',100,'2022-10-17 05:48:00'),(2,'與','yu','yu',500,'2000-01-31 00:30:15'),(3,'陳','chen','chen',50,'2018-08-28 08:48:48'),(4,'晨','chenchen','chenchen',800,'2020-02-09 14:09:15'),(5,'芯','xin','xin',1000,'2004-06-16 06:30:30');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
 
-select member.name,message.content from member inner join message on member.id=message.member_id;
-select member.name,message.content from member inner join message on member.id=message.member_id where username='test';
-select avg(like_count) as test留言平均按讚數 from member inner join message on member.id=message.member_id where username='test';
+--
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `member_id` bigint NOT NULL,
+  `content` varchar(255) NOT NULL,
+  `like_count` int unsigned NOT NULL DEFAULT '0',
+  `time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `member_id` (`member_id`),
+  CONSTRAINT `message_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `message`
+--
+
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` VALUES (1,1,'滑起來囉寶貝',500,'2022-10-17 07:16:28'),(2,2,'一刀殺進去',800,'2022-10-17 07:19:58'),(3,3,'喔是喔真的假的555',10,'2022-10-17 07:19:58'),(4,4,'靠我力量!',1000,'2022-10-17 07:19:58'),(5,5,'這個叫什麼!',1200,'2022-10-17 07:19:58');
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-10-18 17:01:11
